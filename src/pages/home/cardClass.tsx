@@ -1,6 +1,7 @@
 import React from 'react';
+import { RiSearchLine } from 'react-icons/ri';
 import './data';
-import './App.css';
+import './home';
 import { Items } from './items';
 import { IAppState, IAppProps, IProduct } from '../../interface';
 
@@ -42,6 +43,7 @@ export class Card extends React.Component<IAppProps, IAppState> {
             placeholder="search product"
             onChange={this.handleSearchInputChange}
           />
+          <RiSearchLine className="riSearch" />
         </form>
         <div>
           <Items items={currentItems} />

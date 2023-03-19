@@ -5,11 +5,14 @@ export class Item extends Component<IItemProps> {
   render(): JSX.Element {
     return (
       <div className="wrapperItem">
-        <h2>{this.props.items.title}</h2>
-        <img src={this.props.items.thumbnail}></img>
-        <h4>category: {this.props.items.category}</h4>
-        <h4>brand: {this.props.items.brand}</h4>
-        <div>rating: {this.props.items.rating}</div>
+        <h2 className="titleItem">{this.props.items.title.toUpperCase()}</h2>
+        <figure className="wrapperImgItem">
+          <img className="imgItem" src={this.props.items.thumbnail}></img>
+        </figure>
+        <h2 className="priceItem">{this.props.items.price} €</h2>
+        <h4 className="categoryItem">category: {this.props.items.category}</h4>
+        <h4 className="brandItem">brand: {this.props.items.brand}</h4>
+        <div className="ratingItem">rating: {this.props.items.rating}</div>
       </div>
     );
   }
