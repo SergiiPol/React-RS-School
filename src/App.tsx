@@ -1,12 +1,11 @@
 import { Routes, Link, Route } from 'react-router-dom';
 import './pages/home/data';
-import './App.css';
 import './pages/home/home';
 import { Home } from './pages/home/home';
 import { About } from './pages/aboutUs/about';
 import { Notfound } from './pages/notFound/notfoundpage';
 
-function App() {
+function App(): JSX.Element {
   return (
     <>
       <header>

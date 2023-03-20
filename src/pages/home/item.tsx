@@ -7,7 +7,7 @@ export class Item extends Component<IItemProps> {
       <div className="wrapperItem">
         <h2 className="titleItem">{this.props.items.title.toUpperCase()}</h2>
         <figure className="wrapperImgItem">
-          <img className="imgItem" src={this.props.items.thumbnail}></img>
+          <img className="imgItem" src={this.props.items.thumbnail} alt="foto_product"></img>
         </figure>
         <h2 className="priceItem">{this.props.items.price} €</h2>
         <h4 className="categoryItem">category: {this.props.items.category}</h4>

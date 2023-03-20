@@ -1,14 +1,14 @@
 export interface IProduct {
   id: number;
   title: string;
-  description: string;
-  price: number;
-  discountPercentage: number;
-  rating: number;
-  stock: number;
   brand: string;
+  price: number;
+  stock: number;
+  discountPercentage: number;
+  description?: string;
+  rating?: number;
   category: string;
-  thumbnail: string;
+  thumbnail?: string;
   images: string[];
 }
 
@@ -22,7 +22,14 @@ export interface IAppState {
 }
 
 export interface IAppProps {
-  data?: IData | readonly IProduct[];
+  items: {
+    id: number;
+    title: string;
+    brand: string;
+    price: number;
+    discountPercentage: number;
+    stock: number;
+  }[];
 }
 
 export interface IItemsProps {
