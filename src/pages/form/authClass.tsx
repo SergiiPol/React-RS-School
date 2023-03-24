@@ -1,10 +1,9 @@
 import React from 'react';
 import './form.css';
-
+import { FormProps, FormState } from '../../interface';
 // eslint-disable-next-line @typescript-eslint/ban-types
-type FormProps = {};
 
-class Auth extends React.Component<FormProps> {
+class Auth extends React.Component<FormProps, FormState> {
   private nameInputRef = React.createRef<HTMLInputElement>();
   private zipCodeInputRef = React.createRef<HTMLInputElement>();
   private birthdayInputRef = React.createRef<HTMLInputElement>();
@@ -16,6 +15,18 @@ class Auth extends React.Component<FormProps> {
   private notificationsSwitchRef = React.createRef<HTMLInputElement>();
   private profilePictureInputRef = React.createRef<HTMLInputElement>();
 
+  state: FormState = {
+    submissions: [],
+    name: '',
+    zipCode: '',
+    birthday: '',
+    country: '',
+    gender: '',
+    notifications: false,
+    profilePicture: null,
+    profilePictureUrl: '',
+    errors: {},
+  };
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -28,26 +39,120 @@ class Auth extends React.Component<FormProps> {
       notifications: this.notificationsSwitchRef.current?.checked ?? false,
       profilePicture: this.profilePictureInputRef.current?.files?.[0] ?? null,
     };
+    const errors: Record<string, string> = {};
 
-    console.log(formData);
+    // Validate name
+    if (formData.name.trim() === '') {
+      errors.name = 'Name is required';
+    } else if (!/^[A-Z]/.test(formData.name)) {
+      errors.name = 'Name must start with an uppercase letter';
+    }
+
+    // Validate zip code
+    if (formData.zipCode.trim() === '') {
+      errors.zipCode = 'Zip code is required';
+    }
+
+    // Validate birthday
+    if (formData.birthday.trim() === '') {
+      errors.birthday = 'Birthday is required';
+    }
+
+    // Validate gender
+    if (!formData.gender) {
+      errors.gender = 'Gender is required';
+    }
+
+    if (!formData.notifications) {
+      errors.notifications = 'Notifications is required';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      this.setState({ errors });
+      return;
+    }
+
+    // Clear errors
+    this.setState({ errors: {} });
+
+    // Update form data
+    this.setState({ ...formData });
+
+    // Convert profile picture to URL and set state
+    if (formData.profilePicture) {
+      const profilePictureUrl = URL.createObjectURL(formData.profilePicture);
+      this.setState({ profilePictureUrl });
+    }
+
+    // Add form data to submissions array
+    this.setState((prevState) => ({
+      submissions: [...prevState.submissions, formData],
+      name: '',
+      zipCode: '',
+      birthday: '',
+      country: '',
+      gender: '',
+      notifications: false,
+      profilePicture: null,
+      profilePictureUrl: '',
+    }));
   };
+  renderError = (fieldName: string) => {
+    const { errors } = this.state;
+    if (errors[fieldName]) {
+      return <div className="error">{errors[fieldName]}</div>;
+    }
+  };
+  renderCards = () => {
+    const { submissions } = this.state;
 
+    return (
+      <div className="card-list">
+        {submissions.map((submission, index) => (
+          <div className="wrapper_one_subbmissionCard" key={index}>
+            <div className="confirmation">Form data saved for {submission.name}</div>
+            {/* {submission.profilePictureUrl && (
+              <img src={submission.profilePictureUrl} alt="profile" />
+            )} */}
+            <div className="card_added">
+              <span>Name:</span> {submission.name}
+            </div>
+            <div className="card_added">
+              <span>Zip code:</span> {submission.zipCode}
+            </div>
+            <div className="card_added">
+              <span>Birthday:</span> {submission.birthday}
+            </div>
+            <div className="card_added">
+              <span>Country:</span> {submission.country}
+            </div>
+            <div className="card_added">
+              <span>Gender:</span> {submission.gender}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form data-testid="auth-component" className="form_auth" onSubmit={this.handleSubmit}>
         <div className="wrapper_form">
           <div className="wrapper_input">
             <label htmlFor="name-input">Name:</label>
             <input id="name-input" type="text" ref={this.nameInputRef} />
           </div>
+          {this.renderError('name')}
           <div className="wrapper_input">
             <label htmlFor="zip-code-input">Zip Code:</label>
             <input id="zip-code-input" type="text" ref={this.zipCodeInputRef} />
           </div>
+          {this.renderError('zipCode')}
           <div className="wrapper_input">
             <label htmlFor="birthday-input">Birthday:</label>
             <input id="birthday-input" type="date" ref={this.birthdayInputRef} />
           </div>
+          {this.renderError('birthday')}
           <div className="wrapper_input">
             <label htmlFor="country-select">Country:</label>
             <select id="country-select" ref={this.countrySelectRef}>
@@ -79,6 +184,7 @@ class Auth extends React.Component<FormProps> {
               <label htmlFor="gender2">Female</label>
             </div>
           </div>
+          {this.renderError('gender')}
           <div className="wrapper_input">
             <label htmlFor="notifications-switch">Notifications:</label>
             <input
@@ -88,6 +194,7 @@ class Auth extends React.Component<FormProps> {
               ref={this.notificationsSwitchRef}
             />
           </div>
+          {this.renderError('notifications')}
           <div className="wrapper_input">
             <label htmlFor="profile-picture-input">Profile Picture:</label>
             <input
@@ -102,6 +209,7 @@ class Auth extends React.Component<FormProps> {
             Submit
           </button>
         </div>
+        {this.renderCards()}
       </form>
     );
   }

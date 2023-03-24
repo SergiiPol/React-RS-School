@@ -8,10 +8,12 @@ import { Notfound } from './pages/notFound/notfoundpage';
 
 function App(): JSX.Element {
   return (
-    <>
+    <div className="App" data-testid="app">
       <header>
         <div className="header">
-          <Link to="/">Home</Link>
+          <Link to="/" data-testid="home-link">
+            Home
+          </Link>
           <Link to="/about">About</Link>
           <Link to="/form">Form</Link>
           {/* <Link to="/404">Not found page</Link> */}
@@ -23,7 +25,7 @@ function App(): JSX.Element {
         <Route path="/form" element={<Form />} />
         <Route path="*" element={<Notfound />} />
       </Routes>
-    </>
+    </div>
   );
 }
 

@@ -39,3 +39,32 @@ export interface IItemsProps {
 export interface IItemProps {
   items: IProduct;
 }
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type FormProps = {};
+
+export interface Images {
+  [key: string]: string;
+}
+export type FormSubmission = {
+  // profilePictureUrl: string | undefined;
+  name: string;
+  zipCode: string;
+  birthday: string;
+  country: string;
+  gender: string;
+  notifications: boolean;
+  profilePicture: File | null;
+};
+
+export type FormState = {
+  submissions: FormSubmission[];
+  name: string;
+  zipCode: string;
+  birthday: string;
+  country: string;
+  gender: string;
+  notifications: boolean;
+  profilePicture: File | null;
+  profilePictureUrl: string;
+  errors: Record<string, string>;
+};
