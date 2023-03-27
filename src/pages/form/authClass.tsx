@@ -29,7 +29,6 @@ class Auth extends React.Component<FormProps, FormState> {
   };
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const formData = {
       name: this.nameInputRef.current?.value ?? '',
       zipCode: this.zipCodeInputRef.current?.value ?? '',
@@ -38,9 +37,10 @@ class Auth extends React.Component<FormProps, FormState> {
       gender: this.genderRadioRefs.find((ref) => ref.current?.checked)?.current?.value ?? '',
       notifications: this.notificationsSwitchRef.current?.checked ?? false,
       profilePicture: this.profilePictureInputRef.current?.files?.[0] ?? null,
+      profilePictureUrl: '',
     };
-    const errors: Record<string, string> = {};
 
+    const errors: Record<string, string> = {};
     // Validate name
     if (formData.name.trim() === '') {
       errors.name = 'Name is required';
@@ -63,8 +63,18 @@ class Auth extends React.Component<FormProps, FormState> {
       errors.gender = 'Gender is required';
     }
 
+    // Validate country
+    if (formData.country.trim() === '') {
+      errors.country = 'Country is required';
+    }
+
     if (!formData.notifications) {
       errors.notifications = 'Notifications is required';
+    }
+
+    // Validate profile picture
+    if (!formData.profilePicture) {
+      errors.profilePicture = 'Profile picture is required';
     }
 
     if (Object.keys(errors).length > 0) {
@@ -96,6 +106,8 @@ class Auth extends React.Component<FormProps, FormState> {
       profilePicture: null,
       profilePictureUrl: '',
     }));
+    const formElement = event.currentTarget;
+    formElement.reset();
   };
   renderError = (fieldName: string) => {
     const { errors } = this.state;
@@ -111,9 +123,11 @@ class Auth extends React.Component<FormProps, FormState> {
         {submissions.map((submission, index) => (
           <div className="wrapper_one_subbmissionCard" key={index}>
             <div className="confirmation">Form data saved for {submission.name}</div>
-            {/* {submission.profilePictureUrl && (
-              <img src={submission.profilePictureUrl} alt="profile" />
-            )} */}
+            <div className="card_added">
+              {submission.profilePictureUrl && (
+                <img src={submission.profilePictureUrl} alt="profile" />
+              )}
+            </div>
             <div className="card_added">
               <span>Name:</span> {submission.name}
             </div>
@@ -156,11 +170,13 @@ class Auth extends React.Component<FormProps, FormState> {
           <div className="wrapper_input">
             <label htmlFor="country-select">Country:</label>
             <select id="country-select" ref={this.countrySelectRef}>
+              <option value="">--Please choose a country--</option>
               <option value="spain">SPAIN</option>
               <option value="germany">GERMANY</option>
               <option value="ucraine">UCRAINE</option>
             </select>
           </div>
+          {this.renderError('country')}
           <div className="wrapper_input">
             <label>Gender:</label>
             <div>
@@ -205,6 +221,7 @@ class Auth extends React.Component<FormProps, FormState> {
               ref={this.profilePictureInputRef}
             />
           </div>
+          {this.renderError('profilePicture')}
           <button className="button_submit_form" type="submit">
             Submit
           </button>
