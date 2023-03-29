@@ -1,7 +1,6 @@
 import React from 'react';
 import './form.css';
 import { FormProps, FormState } from '../../interface';
-// eslint-disable-next-line @typescript-eslint/ban-types
 
 class Auth extends React.Component<FormProps, FormState> {
   private nameInputRef = React.createRef<HTMLInputElement>();
@@ -39,31 +38,25 @@ class Auth extends React.Component<FormProps, FormState> {
       profilePicture: this.profilePictureInputRef.current?.files?.[0] ?? null,
       profilePictureUrl: '',
     };
-
     const errors: Record<string, string> = {};
-    // Validate name
     if (formData.name.trim() === '') {
       errors.name = 'Name is required';
     } else if (!/^[A-Z]/.test(formData.name)) {
       errors.name = 'Name must start with an uppercase letter';
     }
 
-    // Validate zip code
     if (formData.zipCode.trim() === '') {
       errors.zipCode = 'Zip code is required';
     }
 
-    // Validate birthday
     if (formData.birthday.trim() === '') {
       errors.birthday = 'Birthday is required';
     }
 
-    // Validate gender
     if (!formData.gender) {
       errors.gender = 'Gender is required';
     }
 
-    // Validate country
     if (formData.country.trim() === '') {
       errors.country = 'Country is required';
     }
@@ -72,7 +65,6 @@ class Auth extends React.Component<FormProps, FormState> {
       errors.notifications = 'Notifications is required';
     }
 
-    // Validate profile picture
     if (!formData.profilePicture) {
       errors.profilePicture = 'Profile picture is required';
     }
@@ -82,19 +74,15 @@ class Auth extends React.Component<FormProps, FormState> {
       return;
     }
 
-    // Clear errors
     this.setState({ errors: {} });
 
-    // Update form data
     this.setState({ ...formData });
 
-    // Convert profile picture to URL and set state
     if (formData.profilePicture) {
       const profilePictureUrl = URL.createObjectURL(formData.profilePicture);
       this.setState({ profilePictureUrl });
     }
 
-    // Add form data to submissions array
     this.setState((prevState) => ({
       submissions: [...prevState.submissions, formData],
       name: '',
@@ -123,11 +111,7 @@ class Auth extends React.Component<FormProps, FormState> {
         {submissions.map((submission, index) => (
           <div className="wrapper_one_subbmissionCard" key={index}>
             <div className="confirmation">Form data saved for {submission.name}</div>
-            <div className="card_added">
-              {submission.profilePictureUrl && (
-                <img src={submission.profilePictureUrl} alt="profile" />
-              )}
-            </div>
+
             <div className="card_added">
               <span>Name:</span> {submission.name}
             </div>
