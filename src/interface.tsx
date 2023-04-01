@@ -46,7 +46,7 @@ export interface Images {
   [key: string]: string;
 }
 export type FormSubmission = {
-  // profilePictureUrl: string | undefined;
+  profilePictureUrl: string | undefined;
   name: string;
   zipCode: string;
   birthday: string;
@@ -66,5 +66,5 @@ export type FormState = {
   notifications: boolean;
   profilePicture: File | null;
   profilePictureUrl: string;
-  errors: Record<string, string>;
+  errors: Record<string, string> | null;
 };
