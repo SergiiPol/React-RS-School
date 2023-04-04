@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1680645581908" clover="3.2.0">
-  <project timestamp="1680645581908" name="All files">
+<coverage generated="1680646192106" clover="3.2.0">
+  <project timestamp="1680646192107" name="All files">
     <metrics statements="90" coveredstatements="78" conditionals="10" coveredconditionals="6" methods="18" coveredmethods="15" elements="118" coveredelements="99" complexity="0" loc="90" ncloc="90" packages="5" files="13" classes="13"/>
     <package name="src">
       <metrics statements="16" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -48,22 +48,22 @@
       </file>
       <file name="auth.tsx" path="C:\Users\sereg\OneDrive\Рабочий стол\first_task_react_rs-school\Components\src\pages\form\auth.tsx">
         <metrics statements="16" coveredstatements="12" conditionals="1" coveredconditionals="0" methods="4" coveredmethods="2"/>
-        <line num="285" count="1" type="stmt"/>
-        <line num="286" count="1" type="stmt"/>
-        <line num="287" count="1" type="stmt"/>
-        <line num="288" count="1" type="stmt"/>
-        <line num="289" count="1" type="stmt"/>
-        <line num="299" count="16" type="stmt"/>
-        <line num="300" count="15" type="stmt"/>
-        <line num="302" count="15" type="stmt"/>
-        <line num="303" count="0" type="stmt"/>
-        <line num="304" count="0" type="stmt"/>
-        <line num="305" count="0" type="stmt"/>
-        <line num="320" count="15" type="stmt"/>
-        <line num="321" count="15" type="cond" truecount="0" falsecount="1"/>
-        <line num="324" count="15" type="stmt"/>
-        <line num="424" count="0" type="stmt"/>
-        <line num="430" count="1" type="stmt"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="15" count="16" type="stmt"/>
+        <line num="16" count="15" type="stmt"/>
+        <line num="18" count="15" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="36" count="15" type="stmt"/>
+        <line num="37" count="15" type="cond" truecount="0" falsecount="1"/>
+        <line num="40" count="15" type="stmt"/>
+        <line num="140" count="0" type="stmt"/>
+        <line num="146" count="1" type="stmt"/>
       </file>
       <file name="form.tsx" path="C:\Users\sereg\OneDrive\Рабочий стол\first_task_react_rs-school\Components\src\pages\form\form.tsx">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
