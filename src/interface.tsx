@@ -40,7 +40,7 @@ export interface IItemProps {
   items: IProduct;
 }
 // eslint-disable-next-line @typescript-eslint/ban-types
-export type FormProps = {};
+// export type FormProps = {};
 
 export interface Images {
   [key: string]: string;
@@ -67,4 +67,24 @@ export type FormState = {
   profilePicture: File | null;
   profilePictureUrl: string;
   errors: Record<string, string> | null;
+};
+export type ISelect = {
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  name: string;
+  label: string;
+};
+
+export type SubmitedData = {
+  answer: Data;
+};
+
+export type Data = {
+  name: string;
+  zipCode: string;
+  date: string;
+  type: string;
+  notification: string[];
+  message: string;
+  gender: string;
+  profilePicture: string;
 };
