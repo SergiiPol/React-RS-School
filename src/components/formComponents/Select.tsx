@@ -1,6 +1,6 @@
 import React from 'react';
 import { ISelect } from '../../interface';
-import '../form/form.css';
+import './form.css';
 
 const Select = React.forwardRef(
   ({ onChange, name, label }: ISelect, ref: React.LegacyRef<HTMLSelectElement> | undefined) => (

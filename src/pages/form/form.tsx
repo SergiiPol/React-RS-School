@@ -1,4 +1,4 @@
-import Auth from './auth';
+import Auth from '../../components/formComponents/auth';
 
 const Form = () => {
   return (

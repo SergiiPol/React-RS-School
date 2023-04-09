@@ -1,10 +1,10 @@
-import Card from './cardClass';
+import { SearchCard } from '../../components/homePageComponents/cardClass';
 
 const Home = () => {
   return (
-    <div>
+    <div data-testid="home-link">
       <h1>Home</h1>
-      <Card />
+      <SearchCard />
     </div>
   );
 };

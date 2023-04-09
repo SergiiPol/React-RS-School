@@ -3,37 +3,86 @@ import '@testing-library/jest-dom';
 import { render, fireEvent, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-import Item from './pages/home/item';
-import { IProduct } from 'interface';
+import Item from './components/homePageComponents/item';
+import { ICardHero } from 'interface';
+import { Items } from './components/homePageComponents/items';
 import App from './App';
 import { About } from './pages/aboutUs/about';
-import Auth from './pages/form/auth';
+import Auth from './components/formComponents/auth';
 import { Form } from './pages/form/form';
-import Card from './pages/home/cardClass';
+import SearchCard from './components/homePageComponents/cardClass';
+import { ModalWindow } from './components/homePageComponents/modalWindow';
 
+jest.mock('node-fetch');
 global.URL.createObjectURL = jest.fn(() => 'mock-url');
 
-const item: IProduct = {
-  id: 1,
-  title: 'Test Item',
-  price: 9.99,
-  category: 'Test Category',
-  brand: 'Test Brand',
-  rating: 4.5,
-  thumbnail: 'https://test.com/item.jpg',
-  stock: 0,
-  discountPercentage: 0,
-  images: [],
+describe('ModalWindow component', () => {
+  const setIsActive = jest.fn();
+  const charterInfo = {
+    name: 'Test Character',
+    status: 'Alive',
+    species: 'Human',
+    type: 'Test',
+    gender: 'Male',
+    location: {
+      name: 'Test Location',
+    },
+    created: '2022-04-09T12:34:56.789Z',
+    image: 'test-image-url',
+  };
+
+  it('should render modal with charter information when isActiv is true', () => {
+    const { getByText, getByAltText } = render(
+      <ModalWindow isActiv={true} setIsActive={setIsActive} charterInfo={charterInfo} />
+    );
+
+    expect(getByText('Status: Alive')).toBeInTheDocument();
+    expect(getByText('Species: Human')).toBeInTheDocument();
+    expect(getByText('Type: Test')).toBeInTheDocument();
+    expect(getByText('Gender: Male')).toBeInTheDocument();
+    expect(getByText('Location: Test Location')).toBeInTheDocument();
+    expect(getByText('Created: 2022-04-09')).toBeInTheDocument();
+    expect(getByAltText('charter image')).toHaveAttribute('src', 'test-image-url');
+  });
+
+  it('should call setIsActive(false) when modal_container or charter_close is clicked', () => {
+    const { getByTestId } = render(
+      <ModalWindow isActiv={true} setIsActive={setIsActive} charterInfo={charterInfo} />
+    );
+
+    fireEvent.click(getByTestId('modal'));
+    expect(setIsActive).toHaveBeenCalledWith(false);
+
+    fireEvent.click(getByTestId('close'));
+    expect(setIsActive).toHaveBeenCalledWith(false);
+  });
+});
+
+const props: ICardHero = {
+  image: 'https://via.placeholder.com/150',
+  name: 'Hero',
+  species: 'Species name',
+  created: '2023-04-09T14:00:00.000Z',
+  setIsActive: jest.fn(),
+  setCharterInfo: jest.fn(),
+  status: '',
+  type: '',
+  gender: 'mail',
 };
 
-describe('Item component', () => {
-  it('should render item details', () => {
-    const { getByText } = render(<Item items={item} />);
-    expect(getByText(item.title.toUpperCase())).toBeInTheDocument();
-    expect(getByText(`${item.price} €`)).toBeInTheDocument();
-    expect(getByText(`category: ${item.category}`)).toBeInTheDocument();
-    expect(getByText(`brand: ${item.brand}`)).toBeInTheDocument();
-    expect(getByText(`rating: ${item.rating}`)).toBeInTheDocument();
+describe('Item', () => {
+  it('renders with correct props', () => {
+    render(<Item {...props} />);
+    expect(screen.getByText('Fraction:')).toBeInTheDocument();
+    expect(screen.getByAltText('foto')).toBeInTheDocument();
+  });
+
+  it('calls setIsActive and setCharterInfo when clicked', () => {
+    render(<Item {...props} />);
+    const item = screen.getByTestId('item');
+    fireEvent.click(item);
+    expect(props.setIsActive).toHaveBeenCalled();
+    expect(props.setCharterInfo).toHaveBeenCalledWith(props);
   });
 });
 
@@ -75,16 +124,6 @@ describe('Auth component', () => {
     expect(getByLabelText('Notifications')).toBeInTheDocument();
     expect(getByLabelText('Profile picture')).toBeInTheDocument();
   });
-
-  // test('renders form errors', () => {
-  //   const { getByText } = render(<Auth />);
-  //   fireEvent.submit(getByText('Submit'));
-  //   expect(getByText('Name is required')).toBeInTheDocument();
-  //   expect(getByText('ZipCode is required')).toBeInTheDocument();
-  //   expect(getByText('Birthday is required')).toBeInTheDocument();
-  //   expect(getByText('Gender is required')).toBeInTheDocument();
-  //   expect(getByText('Notifications is required')).toBeInTheDocument();
-  // });
 
   test('submits form data', () => {
     const { getByLabelText, getByText, queryByText } = render(<Auth />);
@@ -186,6 +225,7 @@ test('renders App component', () => {
   const appElement = screen.getByTestId('app');
   expect(appElement).toBeInTheDocument();
 });
+
 describe('Auth form', () => {
   test('renders auth form', () => {
     const { getByTestId } = render(<Auth />);
@@ -235,35 +275,6 @@ describe('Auth form', () => {
     const { getByLabelText } = render(<Auth />);
     const profilePictureInput = getByLabelText('Profile picture');
     expect(profilePictureInput).toBeInTheDocument();
-  });
-});
-
-const mockItems = [
-  { title: 'Item 1', brand: 'Brand 1', price: 10, discountPercentage: 0, stock: 5 },
-  { title: 'Item 2', brand: 'Brand 2', price: 20, discountPercentage: 10, stock: 10 },
-];
-
-describe('Card', () => {
-  it('should render search input and icon', () => {
-    const { getByPlaceholderText, getByTestId } = render(<Card />);
-    expect(getByPlaceholderText('search product')).toBeInTheDocument();
-    expect(getByTestId('search-icon')).toBeInTheDocument();
-  });
-
-  it('should filter items when search input is changed', () => {
-    const { getByPlaceholderText, getByText } = render(<Card />);
-    const searchInput = getByPlaceholderText('search product');
-    fireEvent.change(searchInput, { target: { value: 'Item 1' } });
-    expect(() => getByText('Item 2')).toThrow();
-  });
-
-  it('should update local storage when search input is changed', () => {
-    localStorage.setItem('dataProducts', JSON.stringify(mockItems));
-    const { getByPlaceholderText } = render(<Card />);
-    const searchInput = getByPlaceholderText('search product');
-    fireEvent.change(searchInput, { target: { value: 'Brand 1' } });
-    const updatedData = JSON.parse(localStorage.getItem('dataProducts') || '[]');
-    expect(updatedData).toEqual([mockItems[0]]);
   });
 });
 
@@ -317,5 +328,69 @@ describe('Auth component', () => {
     expect(genderError).toBeInTheDocument();
     expect(notificationsError).toBeInTheDocument();
     expect(fotoError).toBeInTheDocument();
+  });
+});
+
+const charters: ICardHero[] = [
+  {
+    id: 1,
+    name: 'Charter 1',
+    species: 'Human',
+    created: '2022-04-08T08:08:08.000Z',
+    cost: '10',
+    image: 'https://image.com/1.jpg',
+    status: '',
+    type: '',
+    gender: '',
+  },
+  {
+    id: 2,
+    name: 'Charter 2',
+    species: 'Alien',
+    created: '2022-04-09T09:09:09.000Z',
+    cost: '',
+    image: 'https://image.com/2.jpg',
+    status: '',
+    type: '',
+    gender: '',
+  },
+];
+
+describe('Items component', () => {
+  it('should render all charters', () => {
+    const setIsActive = jest.fn();
+    const setCharterInfo = jest.fn();
+    const { getByTestId } = render(
+      <Items charters={charters} setIsActive={setIsActive} setCharterInfo={setCharterInfo} />
+    );
+    const itemsElement = getByTestId('items');
+    expect(itemsElement).toBeInTheDocument();
+    expect(itemsElement.children.length).toBe(charters.length);
+  });
+});
+
+describe('SearchCard', () => {
+  it('should render the search input and button', () => {
+    render(<SearchCard />);
+    const input = screen.getByPlaceholderText('Search card...');
+    expect(input).toBeInTheDocument();
+    const button = screen.getByRole('button', { name: 'Go Search' });
+    expect(button).toBeInTheDocument();
+  });
+
+  it('should update the input value on change', () => {
+    render(<SearchCard />);
+    const input = screen.getByPlaceholderText('Search card...');
+    fireEvent.change(input, { target: { value: 'Rick' } });
+    expect(input).toHaveValue('Rick');
+  });
+
+  it('should update the search value on submit', () => {
+    render(<SearchCard />);
+    const input = screen.getByPlaceholderText('Search card...');
+    const button = screen.getByRole('button', { name: 'Go Search' });
+    fireEvent.change(input, { target: { value: 'Rick' } });
+    fireEvent.click(button);
+    expect(screen.getByTestId('items')).toBeInTheDocument();
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { SubmitedData } from '../../interface';
-import '../form/form.css';
+import './form.css';
 
 function SubData(props: SubmitedData) {
   return (

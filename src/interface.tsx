@@ -39,8 +39,6 @@ export interface IItemsProps {
 export interface IItemProps {
   items: IProduct;
 }
-// eslint-disable-next-line @typescript-eslint/ban-types
-// export type FormProps = {};
 
 export interface Images {
   [key: string]: string;
@@ -55,7 +53,25 @@ export type FormSubmission = {
   notifications: boolean;
   profilePicture: File | null;
 };
-
+export interface ICardHero {
+  id?: number;
+  name: string;
+  status: string;
+  species: string;
+  type: string;
+  gender: string;
+  location?: {
+    name: string;
+  };
+  image?: string;
+  created?: string;
+  upload?: Blob | MediaSource | undefined;
+  frame?: boolean;
+  cost?: string;
+  date?: string;
+  setIsActive?: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharterInfo?: React.Dispatch<React.SetStateAction<ICardHero>>;
+}
 export type FormState = {
   submissions: FormSubmission[];
   name: string;
@@ -78,6 +94,12 @@ export type SubmitedData = {
   answer: Data;
 };
 
+export interface ICardHeroList {
+  charters: ICardHero[];
+  setIsActive?: React.Dispatch<React.SetStateAction<boolean>>;
+  setCharterInfo?: React.Dispatch<React.SetStateAction<ICardHero>>;
+}
+
 export type Data = {
   name: string;
   zipCode: string;
@@ -88,3 +110,9 @@ export type Data = {
   gender: string;
   profilePicture: string;
 };
+
+export interface IModalWindowVelue {
+  isActiv: boolean;
+  setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+  charterInfo: ICardHero;
+}
