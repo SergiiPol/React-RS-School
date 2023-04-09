@@ -1,0 +1,8 @@
+{
+    "setupFilesAfterEnv": ["@testing-library/jest-dom/extend-expect"],
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "jsx": "react"
+    },
+  }
+  
